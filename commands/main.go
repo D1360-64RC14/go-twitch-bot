@@ -11,7 +11,7 @@ func Handler(client *twitch.Client, db *gorm.DB) {
 	var commandList = []objects.Command{
 		Bot,
 		Working,
-		LastUse,
+		// LastUse,
 	}
 
 	client.OnPrivateMessage(func(message twitch.PrivateMessage) {
