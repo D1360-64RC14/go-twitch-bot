@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  bot:
+      container_name: twitch-bot
+      build: .
+      depends_on:
+        - database
+      restart: always
+
+  database:
+      image: postgres
+      container_name: postgres-database
+      restart: always
+      ports:
+        - "5432:5432"
+      environment:
+        POSTGRES_PASSWORD: "secretPassword"
+        POSTGRES_USER: "twitchbot"
+        POSTGRES_DB: "test"
