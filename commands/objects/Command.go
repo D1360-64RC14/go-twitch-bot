@@ -63,9 +63,10 @@ func (c *Command) Validate(message twitch.PrivateMessage) bool {
 
 func (c *Command) Exec(message twitch.PrivateMessage, client *twitch.Client, database *gorm.DB) {
 	if c.OnCooldownAll(message.User) {
-		if output := c.Cooldown.Behavior(message, client, database, c);
-		   len(output) > 0 {
+		if c.Cooldown.Behavior != nil {
+			if output := c.Cooldown.Behavior(message, client, database, c); len(output) > 0 {
 			chat.Say(client, message.Channel, output)
+		}
 		}
 
 		return
