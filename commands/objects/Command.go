@@ -93,7 +93,7 @@ func (c *Command) OnCooldownUser(user twitch.User) bool {
 }
 
 func (c *Command) OnCooldownAll(user twitch.User) bool {
-	return c.OnCooldownGlobal() && c.OnCooldownUser(user)
+	return c.OnCooldownGlobal() || c.OnCooldownUser(user)
 }
 
 func (c *Command) UpdateGlobalCooldown(secs uint32) {
