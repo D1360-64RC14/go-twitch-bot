@@ -41,8 +41,8 @@ func NewCommand(
 		globalCooldown      uint32,
 		behavior            CommandBehavior,
 		onCooldownBehavior  CommandBehavior,
-	) *Command {
-	return &Command{
+	) Command {
+	return Command{
 		Name:          name,
 		Pattern:       pattern,
 		CaseSensitive: caseSensitive,
@@ -105,7 +105,9 @@ func (c *Command) UpdateGlobalCooldown(secs uint32) {
 func (c *Command) UpdateUserCooldown(user twitch.User, secs uint32) {
 	var cooldown = time.Duration(secs)
 
-	fmt.Printf("c.Cooldown: %v\n", c.Cooldown)
+	if len(c.Cooldown.userSave) == 0 {
+		c.Cooldown.userSave = make(map[string]time.Time)
+	}
 
 	c.Cooldown.userSave[user.ID] = time.Now().Add(time.Second * cooldown)
 }
