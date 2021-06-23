@@ -140,7 +140,18 @@ func checkCooldown(cooldown *time.Time) bool {
 	return false
 }
 
-// Talvez seja utilizado.
-func NoBehavior(_ twitch.PrivateMessage, _ *twitch.Client, _ *gorm.DB, _ *Command) string {
-	return ""
+// CheckPermission verifica se a permissão do usuário
+// está de acordo com a permissão informada ao comando.
+func (c *Command) CheckPermission(user twitch.User) bool {
+	var initial = false
+
+	if len(c.PermissionLevel) == 0 {
+		return true
+	}
+
+
+	for _, p := range c.PermissionLevel {
+		initial = initial || user.Badges[p] == 1
+	}
+	return initial
 }
