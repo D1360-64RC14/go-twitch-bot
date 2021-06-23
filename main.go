@@ -13,12 +13,13 @@ import (
 )
 
 func main() {
-	log.Println("Iniciando...")
+	log.Println("--- INICIALIZAÇÃO ---")
 
 	var err = godotenv.Load(".env")
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println(".env carregado.")
 
 	// ----- CONEXÃO COM BASE DE DADOS ----- //
 	var db *gorm.DB
@@ -35,6 +36,7 @@ func main() {
 	log.Println("Conexão com base de dados realizada.")
 
 	database.Migrations(db)
+	log.Println("Migrations verificadas.")
 
 	// ----- CONEXÃO COM CHAT DA TWITCH ----- //
 	var client *twitch.Client
@@ -43,10 +45,11 @@ func main() {
 		OAuth:    os.Getenv("TWITCH_OAUTH")   ,
 		Channel:  os.Getenv("TWITCH_CHANNEL") ,
 	})
+	log.Println("Inicialização do chat da twitch realizada.")
 
 	commands.Handler(client, db)
 
-	log.Println("Iniciado com sucesso!")
+	log.Print("--- INICIADO COM SUCESSO! ---\n\n")
 
 	err = client.Connect()
 	if err != nil {
