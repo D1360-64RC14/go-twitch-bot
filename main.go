@@ -21,18 +21,19 @@ func main() {
 
 	// ----- CONEXÃO COM BASE DE DADOS ----- //
 	var db *gorm.DB
-	// db, err = database.NewDatabase(database.Options{
-	// 	Host:     os.Getenv("DATABASE_HOST")    ,
-	// 	Username: os.Getenv("DATABASE_USERNAME"),
-	// 	Password: os.Getenv("DATABASE_PASSWORD"),
-	// 	DBName:   os.Getenv("DATABASE_DBNAME")  ,
-	// 	Port:     os.Getenv("DATABASE_PORT")    ,
-	// })
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	db, err = database.NewDatabase(database.Options{
+		Host:     os.Getenv("DATABASE_HOST")    ,
+		Username: os.Getenv("DATABASE_USERNAME"),
+		Password: os.Getenv("DATABASE_PASSWORD"),
+		DBName:   os.Getenv("DATABASE_DBNAME")  ,
+		Port:     os.Getenv("DATABASE_PORT")    ,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Conexão com base de dados realizada.")
 
-	// database.Migrations(db)
+	database.Migrations(db)
 
 	// ----- CONEXÃO COM CHAT DA TWITCH ----- //
 	var client *twitch.Client
