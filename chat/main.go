@@ -59,12 +59,6 @@ func Int2Bool(num uint8) bool {
 	return false
 }
 
-// Exclusive é um atalho para verificar se quem
-// mandou a mensagem é um moderador ou streamer
-func Exclusive(message twitch.PrivateMessage) bool {
-	return Permission(message, MODERATOR, STREAMER)
-}
-
 func Log(message twitch.PrivateMessage) {
 	log.Printf("%s | %s: %s",
 		message.Channel,
