@@ -9,6 +9,15 @@ import (
 	"gorm.io/gorm"
 )
 
+var Bot = objects.Command{
+	Name: "Bot",
+	Description: "Algumas informações sobre o bot.",
+	Pattern: regexp.MustCompile(`^!bot.*`),
+	CaseSensitive: false,
+	Cooldown: &objects.Cooldown{Global: 120, User: 0},
+	Behavior: BotBehavior,
+}
+
 func BotBehavior(message twitch.PrivateMessage, client *twitch.Client, database *gorm.DB, command *objects.Command) string {
 	var msg = fmt.Sprintf(
 		"Oi @%s, fui feito utilizando GoLang, estou rodando em um Docker num Raspberry Pi 4B e " +
@@ -17,12 +26,4 @@ func BotBehavior(message twitch.PrivateMessage, client *twitch.Client, database 
 	)
 	
 	return msg
-}
-
-var Bot = objects.Command{
-	Name: "Bot",
-	Pattern: regexp.MustCompile(`^!bot.*`),
-	CaseSensitive: false,
-	Cooldown: &objects.Cooldown{Global: 60, User: 0},
-	Behavior: BotBehavior,
 }
