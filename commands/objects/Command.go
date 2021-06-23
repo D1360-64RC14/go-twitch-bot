@@ -9,6 +9,14 @@ import (
 	"gorm.io/gorm"
 )
 
+// Permission Enum.
+// Based on Twitch Badges.
+var (
+	PERM_STREAMER  = []string{"broadcaster"}
+	PERM_MODERATOR = append(PERM_STREAMER, "moderator")
+	PERM_VIP       = append(PERM_MODERATOR, "vip")
+)
+
 type Cooldown struct {
 	Global     uint32
 	User       uint32
@@ -26,27 +34,33 @@ type CommandBehavior func(
 
 type Command struct {
 	Name              string
+	Description       string
 	Pattern          *regexp.Regexp
 	CaseSensitive     bool
+	PermissionLevel []string
 	Cooldown         *Cooldown
 	Behavior          CommandBehavior
 }
 
 func NewCommand(
 		name                string,
+		description         string,
 		pattern            *regexp.Regexp,
 		caseSensitive       bool,
+		permissionLevel   []string,
 		userCooldown        uint32,
 		globalCooldown      uint32,
 		behavior            CommandBehavior,
 		onCooldownBehavior  CommandBehavior,
 	) Command {
 	return Command{
-		Name:          name,
-		Pattern:       pattern,
-		CaseSensitive: caseSensitive,
-		Behavior:      behavior,
-		Cooldown:      &Cooldown{
+		Name:            name,
+		Description:     description,
+		Pattern:         pattern,
+		CaseSensitive:   caseSensitive,
+		PermissionLevel: permissionLevel,
+		Behavior:        behavior,
+		Cooldown:       &Cooldown{
 			globalSave: time.Time{},
 			userSave:   make(map[string]time.Time),
 			Behavior:   onCooldownBehavior,
