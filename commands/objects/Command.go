@@ -2,6 +2,7 @@ package objects
 
 import (
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/d1360-64rc14/twitch-bot/chat"
@@ -71,7 +72,10 @@ func NewCommand(
 }
 
 func (c *Command) Validate(message twitch.PrivateMessage) bool {
-	return c.Pattern.MatchString(message.Message)
+	if c.CaseSensitive {
+		return c.Pattern.MatchString(message.Message)
+	}
+	return c.Pattern.MatchString(strings.ToLower(message.Message))
 }
 
 func (c *Command) Exec(message twitch.PrivateMessage, client *twitch.Client, database *gorm.DB) {
