@@ -75,7 +75,7 @@ func (c *Command) Validate(message twitch.PrivateMessage) bool {
 }
 
 func (c *Command) Exec(message twitch.PrivateMessage, client *twitch.Client, database *gorm.DB) {
-	if c.OnCooldownAll(message.User) {
+	if c.InCooldownAll(message.User) {
 		if c.Cooldown.Behavior != nil {
 			if output := c.Cooldown.Behavior(message, client, database, c); len(output) > 0 {
 				chat.Say(client, message.Channel, output)
@@ -93,21 +93,20 @@ func (c *Command) Exec(message twitch.PrivateMessage, client *twitch.Client, dat
 	}
 }
 
-// TO;DO : CaseSensitive
-func (c *Command) OnCooldownGlobal() bool {
+func (c *Command) InCooldownGlobal() bool {
 	var cooldown = c.Cooldown.globalSave
 
 	return checkCooldown(&cooldown)
 }
 
-func (c *Command) OnCooldownUser(user twitch.User) bool {
+func (c *Command) InCooldownUser(user twitch.User) bool {
 	var cooldown = c.Cooldown.userSave[user.ID]
 
 	return checkCooldown(&cooldown)
 }
 
-func (c *Command) OnCooldownAll(user twitch.User) bool {
-	return c.OnCooldownGlobal() || c.OnCooldownUser(user)
+func (c *Command) InCooldownAll(user twitch.User) bool {
+	return c.InCooldownGlobal() || c.InCooldownUser(user)
 }
 
 func (c *Command) UpdateGlobalCooldown(secs uint32) {
