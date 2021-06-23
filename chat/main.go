@@ -7,13 +7,6 @@ import (
 	"github.com/gempir/go-twitch-irc/v2"
 )
 
-// Permission Enum
-const (
-	STREAMER  = "broadcaster"
-	MODERATOR = "moderator"
-	VIP       = "vip"
-)
-
 type Options struct {
 	Username string
 	OAuth    string
