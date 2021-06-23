@@ -6,6 +6,7 @@ import (
 
 	"github.com/d1360-64rc14/twitch-bot/chat"
 	"github.com/d1360-64rc14/twitch-bot/commands"
+	"github.com/d1360-64rc14/twitch-bot/database"
 	"github.com/gempir/go-twitch-irc/v2"
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
