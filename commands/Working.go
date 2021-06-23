@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"fmt"
 	"regexp"
 
 	"github.com/d1360-64rc14/twitch-bot/commands/objects"
@@ -10,17 +9,14 @@ import (
 )
 
 var Working = objects.Command{
-	Name: "Working",
+	Name: "Working?",
+	Description: "Comando utilizado por moderadores para verificar a atividade do bot.",
 	Pattern: regexp.MustCompile(`^!working\?$`),
 	CaseSensitive: false,
-	Cooldown: &objects.Cooldown{Global: 0, User: 0, Behavior: WorkingCooldownBehavior},
+	Cooldown: &objects.Cooldown{Global: 0, User: 0},
 	Behavior: WorkingBehavior,
 }
 
 func WorkingBehavior(message twitch.PrivateMessage, client *twitch.Client, database *gorm.DB, command *objects.Command) string {
 	return "Estou Funcionando VoHiYo"
-}
-
-func WorkingCooldownBehavior(_ twitch.PrivateMessage, _ *twitch.Client, _ *gorm.DB, command *objects.Command) string {
-	return fmt.Sprintf("O Comando '%s' está em cooldown!", command.Name)
 }
